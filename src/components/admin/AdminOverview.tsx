@@ -12,29 +12,43 @@ import {
   initLocalStorage,
 } from '@/services/db';
 import { FolderOpen, Award, Briefcase, MessageSquare, Activity, TrendingUp, Eye, Clock } from 'lucide-react';
-import type { ActivityLog } from '@/services/db.types';
+import type { ActivityLog, Message } from '@/services/db.types';
 
 export default function AdminOverview() {
   const [stats, setStats] = useState({ projects: 0, skills: 0, experience: 0, testimonials: 0 });
   const [logs, setLogs] = useState<ActivityLog[]>([]);
   const [messagesCount, setMessagesCount] = useState(0);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
-    initLocalStorage();
-    Promise.all([
-  getProjects(),
-  getSkills(),
-  getExperience(),
-  getTestimonials(),
-  getLogs(),
-  getMessages(),
-]).then(([p, sk, ex, t, l, m]) => {
-        setStats({ projects: p.length, skills: sk.length, experience: ex.length, testimonials: t.length });
-        setLogs(l.slice(0, 8));
-        setMessagesCount(m.length);
-      }
-    );
-  }, []);
+  initLocalStorage();
+
+  Promise.all([
+    getProjects(),
+    getSkills(),
+    getExperience(),
+    getTestimonials(),
+    getLogs(),
+    getMessages(),
+  ])
+    .then(([p, sk, ex, t, l, m]) => {
+      console.log("Messages:", m);
+
+      setStats({
+        projects: p.length,
+        skills: sk.length,
+        experience: ex.length,
+        testimonials: t.length,
+      });
+
+      setLogs(l.slice(0, 8));
+      setMessagesCount(m.length);
+      setMessages(m.slice(0, 5));
+    })
+    .catch((err) => {
+      console.error("Promise.all failed:", err);
+    });
+}, []);
 
   const cards = [
   { label: 'Total Projects', value: stats.projects, icon: FolderOpen, color: '#10b981' },
@@ -82,6 +96,7 @@ export default function AdminOverview() {
             Quick Actions
           </h2>
         </div>
+
         <div className="grid sm:grid-cols-3 gap-3">
           {[
             { label: 'Add Project', href: '/admin/projects', icon: FolderOpen },
@@ -97,6 +112,72 @@ export default function AdminOverview() {
           ))}
         </div>
       </div>
+      {/* Latest Messages */}
+<div className="glass-panel rounded-2xl p-6">
+  <div className="flex items-center gap-2 mb-5">
+    <MessageSquare
+      className="w-4 h-4"
+      style={{ color: 'var(--primary)' }}
+    />
+    <h2
+      className="font-semibold text-sm"
+      style={{
+        fontFamily: 'var(--font-poppins)',
+        color: 'var(--foreground)',
+      }}
+    >
+      Latest Messages
+    </h2>
+  </div>
+
+  {messages.length === 0 ? (
+    <p
+      className="text-sm"
+      style={{ color: 'var(--text-muted)' }}
+    >
+      No messages yet.
+    </p>
+  ) : (
+    <div className="space-y-3">
+      {messages.map((msg) => (
+        <div
+          key={msg.id}
+          className="border rounded-xl p-4"
+          style={{ borderColor: 'var(--card-border)' }}
+        >
+          <div className="flex items-center justify-between">
+            <h3
+              className="font-semibold"
+              style={{ color: 'var(--foreground)' }}
+            >
+              {msg.name}
+            </h3>
+
+            {!msg.is_read && (
+              <span className="text-xs px-2 py-1 rounded-full bg-green-500/20 text-green-400">
+                New
+              </span>
+            )}
+          </div>
+
+          <p
+            className="text-sm mt-1"
+            style={{ color: 'var(--text-muted)' }}
+          >
+            {msg.subject}
+          </p>
+
+          <p
+            className="text-xs mt-2"
+            style={{ color: 'var(--text-muted)' }}
+          >
+            {msg.email}
+          </p>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
 
       {/* Recent activity */}
       <div className="glass-panel rounded-2xl p-6">

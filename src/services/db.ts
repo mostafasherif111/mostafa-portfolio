@@ -179,10 +179,15 @@ const normalizeExperienceList = (experience: unknown[]): Experience[] => experie
 export async function getProjects(): Promise<Project[]> {
   if (isSupabaseConfigured()) {
     const supabase = getSupabaseClient();
-    const { data, error } = await supabase
-      .from('projects')
-      .select('*')
-      .order('created_at', { ascending: false });
+   const { data, error, count } = await supabase
+  .from('messages')
+  .select('*', { count: 'exact' });
+
+console.log({
+  data,
+  error,
+  count,
+});
 
     if (error) {
       console.error('getProjects supabase error:', error.message);
@@ -751,9 +756,11 @@ export async function getMessages(): Promise<Message[]> {
       console.error('getMessages supabase error:', error.message);
       throw error;
     }
+    console.log("Messages data:", data);
 
     return (data ?? []) as Message[];
   }
+  
 
   return [];
 }
