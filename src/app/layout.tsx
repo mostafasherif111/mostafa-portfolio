@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Mostafa Sherif Fahmy | Graphic Designer & Founder of Vision X",
   description:
     "Award-level portfolio of Mostafa Sherif Fahmy — Graphic Designer, Brand Strategist, and Founder of Vision X. Expert in Visual Identity, Social Media Design, Branding, and Creative Leadership.",
+  verification: {
+    google: "ERoLF49TbWJ5bVDD_EtnLmUWNoVlXidAu60H46KLADg",
+  },
   keywords: [
     "Graphic Designer Egypt",
     "Brand Identity Designer",
