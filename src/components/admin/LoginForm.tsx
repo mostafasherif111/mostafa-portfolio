@@ -6,7 +6,7 @@ import { Zap, Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
 
 export default function LoginForm() {
   const { signIn } = useAuth();
-  const [email, setEmail] = useState('admin@mostafasherif.com');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState('');
@@ -100,17 +100,6 @@ export default function LoginForm() {
             </button>
           </form>
 
-          {/* Demo hint */}
-          <div className="mt-6 p-4 rounded-xl" style={{ background: 'var(--emerald-glow)', border: '1px solid rgba(16,185,129,0.2)' }}>
-            <p className="text-xs font-semibold mb-2" style={{ color: 'var(--primary)', fontFamily: 'var(--font-poppins)' }}>
-              Demo Credentials
-            </p>
-            <div className="space-y-1 text-xs" style={{ color: 'var(--text-muted)' }}>
-              <p><strong style={{ color: 'var(--foreground)' }}>Super Admin:</strong> admin@mostafasherif.com / mostafasherif</p>
-              <p><strong style={{ color: 'var(--foreground)' }}>Editor:</strong> editor@mostafasherif.com / editor123</p>
-              <p><strong style={{ color: 'var(--foreground)' }}>Viewer:</strong> viewer@mostafasherif.com / viewer123</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
