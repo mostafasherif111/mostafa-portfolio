@@ -160,7 +160,7 @@ export default function HeroSection() {
             View Portfolio
           </button>
           <a
-            href="/cv.pdf"
+            href="/Mostafa_Sherif_Fahmy_CV.pdf"
             download
             id="download-cv-btn"
             className="flex items-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105"
