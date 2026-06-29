@@ -1,5 +1,13 @@
 import { ensureSupabaseClient, isSupabaseConfigured } from '@/lib/supabase';
-import { Project, Skill, Experience, Testimonial, SiteSettings, ActivityLog } from './db.types';
+import {
+  Project,
+  Skill,
+  Experience,
+  Testimonial,
+  SiteSettings,
+  ActivityLog,
+  Message,
+} from './db.types';
 import {
   DEFAULT_PROJECTS,
   DEFAULT_SKILLS,
@@ -725,4 +733,27 @@ export async function addLog(userEmail: string, action: string, details: string)
   logs.push(newLog);
   setLocal('mostafasherif_logs', logs.slice(0, 100)); // Limit to last 100 logs
   return newLog;
+}
+// ----------------------------------------------------
+// MESSAGES
+// ----------------------------------------------------
+
+export async function getMessages(): Promise<Message[]> {
+  if (isSupabaseConfigured()) {
+    const supabase = getSupabaseClient();
+
+    const { data, error } = await supabase
+      .from('messages')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('getMessages supabase error:', error.message);
+      throw error;
+    }
+
+    return (data ?? []) as Message[];
+  }
+
+  return [];
 }

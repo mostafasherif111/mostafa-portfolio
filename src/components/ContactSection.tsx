@@ -28,14 +28,35 @@ export default function ContactSection() {
     getSettings().then(setSettings);
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('sending');
-    await new Promise(r => setTimeout(r, 1200));
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setStatus('sending');
+
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(form),
+    });
+
+    if (!res.ok) throw new Error();
+
     setStatus('sent');
-    setForm({ name: '', email: '', subject: '', message: '' });
+    setForm({
+      name: '',
+      email: '',
+      subject: '',
+      message: '',
+    });
+
     setTimeout(() => setStatus('idle'), 5000);
-  };
+  } catch (err) {
+    console.error(err);
+    setStatus('error');
+  }
+};
 
   const contactItems = settings ? [
     { icon: Mail, label: 'Email', value: settings.contactEmail, href: `mailto:${settings.contactEmail}` },

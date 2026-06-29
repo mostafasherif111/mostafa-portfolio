@@ -2,30 +2,47 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getProjects, getSkills, getTestimonials, getExperience, getLogs, initLocalStorage } from '@/services/db';
+import {
+  getProjects,
+  getSkills,
+  getTestimonials,
+  getExperience,
+  getLogs,
+  getMessages,
+  initLocalStorage,
+} from '@/services/db';
 import { FolderOpen, Award, Briefcase, MessageSquare, Activity, TrendingUp, Eye, Clock } from 'lucide-react';
 import type { ActivityLog } from '@/services/db.types';
 
 export default function AdminOverview() {
   const [stats, setStats] = useState({ projects: 0, skills: 0, experience: 0, testimonials: 0 });
   const [logs, setLogs] = useState<ActivityLog[]>([]);
+  const [messagesCount, setMessagesCount] = useState(0);
 
   useEffect(() => {
     initLocalStorage();
-    Promise.all([getProjects(), getSkills(), getExperience(), getTestimonials(), getLogs()]).then(
-      ([p, sk, ex, t, l]) => {
+    Promise.all([
+  getProjects(),
+  getSkills(),
+  getExperience(),
+  getTestimonials(),
+  getLogs(),
+  getMessages(),
+]).then(([p, sk, ex, t, l, m]) => {
         setStats({ projects: p.length, skills: sk.length, experience: ex.length, testimonials: t.length });
         setLogs(l.slice(0, 8));
+        setMessagesCount(m.length);
       }
     );
   }, []);
 
   const cards = [
-    { label: 'Total Projects',    value: stats.projects,    icon: FolderOpen,    color: '#10b981' },
-    { label: 'Skills Listed',     value: stats.skills,      icon: Award,         color: '#3b82f6' },
-    { label: 'Experience Entries',value: stats.experience,  icon: Briefcase,     color: '#8b5cf6' },
-    { label: 'Testimonials',      value: stats.testimonials,icon: MessageSquare, color: '#f59e0b' },
-  ];
+  { label: 'Total Projects', value: stats.projects, icon: FolderOpen, color: '#10b981' },
+  { label: 'Skills Listed', value: stats.skills, icon: Award, color: '#3b82f6' },
+  { label: 'Experience Entries', value: stats.experience, icon: Briefcase, color: '#8b5cf6' },
+  { label: 'Testimonials', value: stats.testimonials, icon: MessageSquare, color: '#f59e0b' },
+  { label: 'Messages', value: messagesCount, icon: MessageSquare, color: '#ef4444' },
+];
 
   return (
     <div className="space-y-8">
