@@ -3,7 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
-  title: "Mostafa Sherif Mohamed | Graphic Designer & Founder of Vision X",
+  title: "Mostafa Sherif Fahmy | Graphic Designer & Founder of Vision X",
   description:
     "Award-level portfolio of Mostafa Sherif Fahmy — Graphic Designer, Brand Strategist, and Founder of Vision X. Expert in Visual Identity, Social Media Design, Branding, and Creative Leadership.",
   verification: {
