@@ -37,7 +37,7 @@ export default function HeroSection() {
 
   // Animated counter
   useEffect(() => {
-    const targets = { projects: 100, clients: 50, years: 6 };
+    const targets = { projects: 100, clients: 50, years: 3 };
     const duration = 2000;
     const steps = 60;
     const interval = duration / steps;
@@ -203,15 +203,7 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <button
-        onClick={() => scrollTo('about')}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-60 hover:opacity-100 transition-opacity"
-        aria-label="Scroll down"
-      >
-        <span className="text-xs tracking-widest uppercase" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-poppins)', fontSize: '10px' }}>Scroll</span>
-        <ArrowDown className="w-4 h-4 animate-bounce" style={{ color: 'var(--primary)' }} />
-      </button>
+     
     </section>
   );
 }
